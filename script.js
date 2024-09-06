@@ -1,22 +1,23 @@
-document.getElementById('play-button').addEventListener('click', function() {
-    const randomNumber = Math.random();
-    const resultElement = document.getElementById('result');
+// 총 애미 초기값 설정
+let totalAmmi = 5000;
 
-    if (randomNumber < 0.5) {
-        resultElement.textContent = '당신이 승리했습니다!';
-        resultElement.style.color = 'green';
-    } else {
-        resultElement.textContent = '당신이 패배했습니다.';
-        resultElement.style.color = 'red';
-    }
-});
+// 총 애미 업데이트 함수
+function updateTotalAmmiDisplay() {
+    document.getElementById('total-ammi').textContent = totalAmmi;
+}
 
 // 룰렛 게임 로직
 document.getElementById('play-roulette').addEventListener('click', function() {
     const betAmount = parseInt(document.getElementById('bet-amount-roulette').value);
     const resultElement = document.getElementById('roulette-result');
+    
     if (isNaN(betAmount) || betAmount <= 0) {
         resultElement.textContent = '유효한 애미 수를 입력하세요.';
+        return;
+    }
+    
+    if (betAmount > totalAmmi) {
+        resultElement.textContent = '애미가 부족합니다!';
         return;
     }
 
@@ -44,6 +45,10 @@ document.getElementById('play-roulette').addEventListener('click', function() {
         finalAmount = betAmount * 0.8;
     }
 
+    // 애미 업데이트
+    totalAmmi = totalAmmi - betAmount + Math.floor(finalAmount);
+    updateTotalAmmiDisplay();
+
     resultElement.textContent = `${resultText} 최종 애미: ${Math.floor(finalAmount)} 애미`;
 });
 
@@ -56,6 +61,11 @@ document.getElementById('play-dice').addEventListener('click', function() {
 
     if (isNaN(betAmount) || betAmount <= 0 || isNaN(pick1) || isNaN(pick2) || pick1 === pick2 || pick1 < 1 || pick1 > 8 || pick2 < 1 || pick2 > 8) {
         resultElement.textContent = '유효한 애미 수와 숫자를 입력하세요.';
+        return;
+    }
+
+    if (betAmount > totalAmmi) {
+        resultElement.textContent = '애미가 부족합니다!';
         return;
     }
 
@@ -76,5 +86,12 @@ document.getElementById('play-dice').addEventListener('click', function() {
         finalAmount = betAmount * 0.8;
     }
 
+    // 애미 업데이트
+    totalAmmi = totalAmmi - betAmount + Math.floor(finalAmount);
+    updateTotalAmmiDisplay();
+
     resultElement.textContent = `${resultText} 최종 애미: ${Math.floor(finalAmount)} 애미`;
 });
+
+// 페이지 로드 시 총 애미 표시
+updateTotalAmmiDisplay();
