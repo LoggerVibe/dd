@@ -3,13 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>애미ㄷㅂ 게임</title>
+    <title>애미도박 게임</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>애미ㄷㅂ 게임</h1>
+    <h1>애미도박 게임</h1>
     <button id="play-button">게임 시작</button>
     <p id="result">결과가 여기에 표시됩니다.</p>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>애미 게임</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>애미 게임</h1>
+
+    <!-- 룰렛 게임 섹션 -->
+    <section id="roulette-section">
+        <h2>룰렛 게임</h2>
+        <label for="bet-amount-roulette">베팅할 애미 수:</label>
+        <input type="number" id="bet-amount-roulette" min="1">
+        <button id="play-roulette">룰렛 돌리기</button>
+        <p id="roulette-result">룰렛 결과가 여기에 표시됩니다.</p>
+    </section>
+
+    <!-- 주사위 게임 섹션 -->
+    <section id="dice-section">
+        <h2>주사위 게임</h2>
+        <label for="bet-amount-dice">베팅할 애미 수:</label>
+        <input type="number" id="bet-amount-dice" min="1">
+        <label for="dice-pick1">숫자 선택 1:</label>
+        <input type="number" id="dice-pick1" min="1" max="8">
+        <label for="dice-pick2">숫자 선택 2:</label>
+        <input type="number" id="dice-pick2" min="1" max="8">
+        <button id="play-dice">주사위 굴리기</button>
+        <p id="dice-result">주사위 결과가 여기에 표시됩니다.</p>
+    </section>
 
     <script src="script.js"></script>
 </body>
