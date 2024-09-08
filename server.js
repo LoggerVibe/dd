@@ -8,19 +8,18 @@ app.use(bodyParser.json());
 
 // MySQL 연결 설정
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: '218.38.112.154',
   user: 'root',
-  password: '1234',
-  database: 'mysql'
+  password: '1234',  // 비밀번호를 자신의 설정에 맞게 변경
+  database: 'mysql'  // 사용할 데이터베이스 이름으로 변경
 });
 
-// MySQL 연결
 connection.connect((err) => {
   if (err) {
-    console.error('MySQL 연결 오류:', err);
+    console.error('MySQL 연결 실패: ' + err.stack);
     return;
   }
-  console.log('MySQL 연결 성공, 연결 ID:', connection.threadId);
+  console.log('MySQL 연결 성공, 연결 ID: ' + connection.threadId);
 });
 
 // 회원가입 API
@@ -46,10 +45,7 @@ app.post('/login', (req, res) => {
     if (err || results.length === 0) {
       res.json({ success: false, message: '로그인 실패' });
     } else {
-      res.json({
-        success: true,
-        balance: results[0].balance
-      });
+      res.json({ success: true, balance: results[0].balance });
     }
   });
 });
@@ -58,62 +54,55 @@ app.post('/login', (req, res) => {
 app.post('/play-roulette', (req, res) => {
   const { betAmount } = req.body;
   const outcomes = [
-    { name: '무현운지', chance: 0.07, multiplier: 0 },
+    { name: '무현운지', chance: 0.10, multiplier: 0 },
     { name: '반띵', chance: 0.20, multiplier: 0.5 },
-    { name: '본전', chance: 0.40, multiplier: 1 },
-    { name: '야~ 기분좋다', chance: 0.03, multiplier: 2 },
-    { name: '코알라가 덮쳐온다?!?!', chance: 0.30, multiplier: 1.2 }
+    { name: '본전', chance: 0.20, multiplier: 1 },
+    { name: '이득', chance: 0.30, multiplier: 1.5 },
+    { name: '애매', chance: 0.10, multiplier: 1.2 },
+    { name: '애매2', chance: 0.10, multiplier: 0.8 }
   ];
-  
-  const rand = Math.random();
-  let outcome;
-  let cumulativeChance = 0;
 
-  for (let i = 0; i < outcomes.length; i++) {
-    cumulativeChance += outcomes[i].chance;
-    if (rand < cumulativeChance) {
-      outcome = outcomes[i];
+  const random = Math.random();
+  let sum = 0;
+  let result = {};
+
+  for (let outcome of outcomes) {
+    sum += outcome.chance;
+    if (random <= sum) {
+      result = outcome;
       break;
     }
   }
 
-  const sql = 'UPDATE users SET balance = balance + ? WHERE username = ?';
-  connection.query(sql, [betAmount * outcome.multiplier, req.body.username], (err, result) => {
-    if (err) {
-      res.json({ success: false, message: '게임 실패' });
-    } else {
-      res.json({
-        success: true,
-        result: outcome.name,
-        newBalance: result[0].balance
-      });
-    }
-  });
+  const winnings = Math.floor(betAmount * result.multiplier);
+  res.json({ success: true, result: result.name, newBalance: winnings });
 });
 
 // 주사위 게임 API
 app.post('/play-dice', (req, res) => {
   const { betAmount, chosenNumber1, chosenNumber2 } = req.body;
-  const diceRoll = Math.floor(Math.random() * 6) + 1;
+  const randomNum1 = Math.floor(Math.random() * 8) + 1;
+  const randomNum2 = Math.floor(Math.random() * 8) + 1;
 
-  const win = chosenNumber1 == diceRoll || chosenNumber2 == diceRoll;
-  const winnings = win ? betAmount * 2 : -betAmount;
+  let result = '';
+  let winnings = 0;
 
-  const sql = 'UPDATE users SET balance = balance + ? WHERE username = ?';
-  connection.query(sql, [winnings, req.body.username], (err, result) => {
-    if (err) {
-      res.json({ success: false, message: '게임 실패' });
-    } else {
-      res.json({
-        success: true,
-        result: `주사위 결과: ${diceRoll}`,
-        newBalance: result[0].balance
-      });
-    }
-  });
+  if ((randomNum1 == chosenNumber1 && randomNum2 == chosenNumber2) || 
+      (randomNum1 == chosenNumber2 && randomNum2 == chosenNumber1)) {
+    result = '두 숫자 모두 일치';
+    winnings = Math.floor(betAmount * 1.5);
+  } else if (randomNum1 == chosenNumber1 || randomNum2 == chosenNumber2 || 
+             randomNum1 == chosenNumber2 || randomNum2 == chosenNumber1) {
+    result = '한 숫자만 일치';
+    winnings = Math.floor(betAmount * 1.2);
+  } else {
+    result = '숫자가 일치하지 않음';
+    winnings = Math.floor(betAmount * 0.8);
+  }
+
+  res.json({ success: true, result, newBalance: winnings });
 });
 
-// 서버 시작
 app.listen(port, () => {
-  console.log(`서버가 http://localhost:${port}에서 실행 중입니다.`);
+  console.log(`서버가 http://localhost:${port} 에서 실행 중입니다`);
 });
