@@ -8,10 +8,10 @@ app.use(bodyParser.json());
 
 // MySQL 연결 설정
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: '218.38.112.154',
   user: 'root',
-  password: 'your_password',
-  database: 'your_database'
+  password: '1234',
+  database: 'mysql'
 });
 
 // MySQL 연결
@@ -40,7 +40,6 @@ app.post('/login', (req, res) => {
     if (err || results.length === 0) {
       res.json({ success: false, message: '로그인 실패' });
     } else {
-      res.json({ success: true
       res.json({
         success: true,
         balance: results[0].balance
