@@ -2,61 +2,43 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #f0f0f0;
+    margin: 0;
     padding: 20px;
 }
 
-h1, h2 {
+header h1 {
     color: #333;
+}
+
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 section {
     margin: 20px 0;
 }
 
-input {
+input, button {
     margin: 5px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
 }
 
 button {
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 10px;
     cursor: pointer;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
 }
 
-button:hover {
-    background-color: #0056b3;
+#result {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #555;
 }
 
 p {
     margin-top: 20px;
     font-size: 18px;
-}
-
-#game-section {
-    margin: 20px 0;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#ranking-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-#ranking-list li {
-    padding: 10px;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 5px;
 }
