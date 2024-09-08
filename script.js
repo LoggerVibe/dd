@@ -1,5 +1,5 @@
 // 서버와 통신을 위한 기본 설정
-const baseUrl = 'http://localhost:3000';  // 서버 주소
+const baseUrl = 'http://localhost:3306';  // 서버 주소
 
 // 회원가입 이벤트
 document.getElementById('registerForm').addEventListener('submit', function (e) {
