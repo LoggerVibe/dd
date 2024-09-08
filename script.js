@@ -94,6 +94,57 @@ document.addEventListener('DOMContentLoaded', function() {
         resultElement.textContent = `${resultText} 최종 애미: ${Math.floor(finalAmount)} 애미`;
     });
 
-    // 페이지 로드 시 총 애미 표시
-    updateTotalAmmiDisplay();
+    // 회원가입
+    document.getElementById('signup-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const username = document.getElementById('signup-username').value;
+        const password = document.getElementById('signup-password').value;
+
+        const response = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+        document.getElementById('signup-result').textContent = result.message;
+    });
+
+    // 로그인
+    document.getElementById('login-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+        document.getElementById('login-result').textContent = result.message;
+    });
+
+    // 랭킹 표시
+    async function loadRanking() {
+        const response = await fetch('/ranking');
+        const rankingData = await response.json();
+
+        const rankingList = document.getElementById('ranking-list');
+        rankingList.innerHTML = ''; // 기존 항목 삭제
+
+        rankingData.forEach((player, index) => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${index + 1}. ${player.username}: ${player.totalAmmi} 애미`;
+            rankingList.appendChild(listItem);
+        });
+    }
+
+    // 페이지 로드 시 랭킹 불러오기
+    document.addEventListener('DOMContentLoaded', loadRanking);
 });
