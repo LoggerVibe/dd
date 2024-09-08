@@ -9,8 +9,7 @@
 <body>
     <h1>게임 웹사이트</h1>
     
-    <!-- 회원가입 -->
-    <section id="signup">
+    <section>
         <h2>회원가입</h2>
         <form id="signup-form">
             <label for="signup-username">사용자 이름:</label>
@@ -21,9 +20,8 @@
         </form>
         <p id="signup-result"></p>
     </section>
-    
-    <!-- 로그인 -->
-    <section id="login">
+
+    <section>
         <h2>로그인</h2>
         <form id="login-form">
             <label for="login-username">사용자 이름:</label>
@@ -34,22 +32,18 @@
         </form>
         <p id="login-result"></p>
     </section>
-    
-    <!-- 게임 -->
-    <section id="game">
+
+    <section>
         <h2>게임</h2>
-        
-        <!-- 룰렛 게임 -->
-        <section id="roulette">
+        <div id="roulette-section">
             <h3>룰렛</h3>
             <label for="bet-amount-roulette">베팅 금액:</label>
             <input type="number" id="bet-amount-roulette" min="1"><br>
             <button id="play-roulette">룰렛 돌리기</button>
             <p id="roulette-result"></p>
-        </section>
-        
-        <!-- 주사위 게임 -->
-        <section id="dice">
+        </div>
+
+        <div id="dice-section">
             <h3>주사위</h3>
             <label for="bet-amount-dice">베팅 금액:</label>
             <input type="number" id="bet-amount-dice" min="1"><br>
@@ -59,20 +53,16 @@
             <input type="number" id="dice-pick2" min="1" max="8"><br>
             <button id="play-dice">주사위 던지기</button>
             <p id="dice-result"></p>
-        </section>
+        </div>
+
+        <p id="total-ammi">총 애미: 5000</p>
     </section>
-    
-    <!-- 총 애미 및 랭킹 -->
-    <section id="status">
-        <h2 id="total-ammi">총 애미: 5000</h2>
-    </section>
-    
-    <!-- 랭킹 -->
-    <section id="ranking">
+
+    <section>
         <h2>랭킹</h2>
         <ol id="ranking-list"></ol>
     </section>
-    
+
     <script src="scripts.js"></script>
 </body>
 </html>
