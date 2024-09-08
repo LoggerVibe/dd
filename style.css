@@ -1,8 +1,9 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f0f0f0;
+    margin: 0;
     padding: 20px;
+    background-color: #f0f0f0;
 }
 
 h1, h2 {
@@ -28,11 +29,7 @@ p {
     font-size: 18px;
 }
 
-#ranking-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-#ranking-list li {
-    padding: 5px;
+#total-ammi {
+    font-size: 22px;
+    font-weight: bold;
 }
