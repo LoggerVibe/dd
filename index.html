@@ -10,8 +10,12 @@
   <div class="container">
     <h1>애미 게임 사이트</h1>
 
+    <!-- 버튼으로 로그인/회원가입 폼 전환 -->
+    <button id="show-register-form">회원가입</button>
+    <button id="show-login-form">로그인</button>
+
     <!-- 회원가입 폼 -->
-    <div id="signup-form">
+    <div id="signup-form" style="display:none;">
       <h2>회원가입</h2>
       <form id="registerForm">
         <input type="text" id="username" placeholder="사용자명" required><br>
@@ -21,7 +25,7 @@
     </div>
 
     <!-- 로그인 폼 -->
-    <div id="login-form">
+    <div id="login-form" style="display:none;">
       <h2>로그인</h2>
       <form id="loginForm">
         <input type="text" id="login-username" placeholder="사용자명" required><br>
