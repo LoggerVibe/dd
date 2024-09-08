@@ -27,3 +27,12 @@ p {
     margin-top: 20px;
     font-size: 18px;
 }
+
+#ranking-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#ranking-list li {
+    padding: 5px;
+}
