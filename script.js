@@ -2,10 +2,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let totalAmmi = 5000;
 
     function updateTotalAmmiDisplay() {
-        document.getElementById('total-ammi').textContent = '총 애미: ' + totalAmmi;
+        document.getElementById('total-ammi').textContent = totalAmmi;
     }
 
-    document.getElementById('play-roulette').addEventListener('click', async function() {
+    document.getElementById('play-roulette').addEventListener('click', function() {
         const betAmount = parseInt(document.getElementById('bet-amount-roulette').value);
         const resultElement = document.getElementById('roulette-result');
         
@@ -47,19 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTotalAmmiDisplay();
 
         resultElement.textContent = `${resultText} 최종 애미: ${Math.floor(finalAmount)} 애미`;
-
-        // 서버에 게임 결과 저장
-        const username = 'currentUsername'; // 실제로는 로그인한 사용자 정보를 사용
-        await fetch('/game-result', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, ammiChange: Math.floor(finalAmount) - betAmount })
-        });
     });
 
-    document.getElementById('play-dice').addEventListener('click', async function() {
+    document.getElementById('play-dice').addEventListener('click', function() {
         const betAmount = parseInt(document.getElementById('bet-amount-dice').value);
         const pick1 = parseInt(document.getElementById('dice-pick1').value);
         const pick2 = parseInt(document.getElementById('dice-pick2').value);
@@ -96,16 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTotalAmmiDisplay();
 
         resultElement.textContent = `${resultText} 최종 애미: ${Math.floor(finalAmount)} 애미`;
-
-        // 서버에 게임 결과 저장
-        const username = 'currentUsername'; // 실제로는 로그인한 사용자 정보를 사용
-        await fetch('/game-result', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, ammiChange: Math.floor(finalAmount) - betAmount })
-        });
     });
 
     document.getElementById('signup-form').addEventListener('submit', async function(event) {
@@ -139,21 +119,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         const result = await response.json();
-        if (result.success) {
-            document.getElementById('login-result').textContent = '로그인 성공!';
-            // 로그인 후 사용자 이름 저장 (예: sessionStorage 또는 localStorage 사용)
-            // localStorage.setItem('username', username);
-            // 또는 클라이언트 측에서 세션 관리
-        } else {
-            document.getElementById('login-result').textContent = result.message;
-        }
+        document.getElementById('login-result').textContent = result.message;
     });
 
     async function loadRanking() {
         const response = await fetch('/ranking');
-        const ranking = await response.json();
+        const rankings = await response.json();
         const rankingList = document.getElementById('ranking-list');
-        rankingList.innerHTML = ranking.map(user => `<li>${user.username}: ${user.totalAmmi} 애미</li>`).join('');
+        rankingList.innerHTML = '';
+
+        rankings.forEach(rank => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${rank.username} - ${rank.totalAmmi}`;
+            rankingList.appendChild(listItem);
+        });
     }
 
     loadRanking();
