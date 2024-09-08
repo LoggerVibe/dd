@@ -29,7 +29,11 @@ p {
     font-size: 18px;
 }
 
-#total-ammi {
-    font-size: 22px;
-    font-weight: bold;
+#ranking-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#ranking-list li {
+    margin: 5px 0;
 }
