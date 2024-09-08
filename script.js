@@ -1,51 +1,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     let totalAmmi = 5000;
-    let loggedInUser = null;
 
     function updateTotalAmmiDisplay() {
-        document.getElementById('total-ammi').textContent = `총 애미: ${totalAmmi}`;
+        document.getElementById('total-ammi').textContent = '총 애미: ' + totalAmmi;
     }
 
-    // 회원가입
-    document.getElementById('signup-form').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const username = document.getElementById('signup-username').value;
-        const password = document.getElementById('signup-password').value;
-
-        const response = await fetch('/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
-
-        const result = await response.json();
-        document.getElementById('signup-result').textContent = result.message;
-    });
-
-    // 로그인
-    document.getElementById('login-form').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const username = document.getElementById('login-username').value;
-        const password = document.getElementById('login-password').value;
-
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
-
-        const result = await response.json();
-        if (result.success) {
-            loggedInUser = username;
-            document.getElementById('login-result').textContent = '로그인 성공!';
-            loadRanking(); // 로그인 후 랭킹을 새로 로드합니다.
-        } else {
-            document.getElementById('login-result').textContent = result.message;
-        }
-    });
-
-    // 룰렛 게임
-    document.getElementById('play-roulette').addEventListener('click', function() {
+    document.getElementById('play-roulette').addEventListener('click', async function() {
         const betAmount = parseInt(document.getElementById('bet-amount-roulette').value);
         const resultElement = document.getElementById('roulette-result');
         
@@ -87,10 +47,19 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTotalAmmiDisplay();
 
         resultElement.textContent = `${resultText} 최종 애미: ${Math.floor(finalAmount)} 애미`;
+
+        // 서버에 게임 결과 저장
+        const username = 'currentUsername'; // 실제로는 로그인한 사용자 정보를 사용
+        await fetch('/game-result', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, ammiChange: Math.floor(finalAmount) - betAmount })
+        });
     });
 
-    // 주사위 게임
-    document.getElementById('play-dice').addEventListener('click', function() {
+    document.getElementById('play-dice').addEventListener('click', async function() {
         const betAmount = parseInt(document.getElementById('bet-amount-dice').value);
         const pick1 = parseInt(document.getElementById('dice-pick1').value);
         const pick2 = parseInt(document.getElementById('dice-pick2').value);
@@ -127,24 +96,65 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTotalAmmiDisplay();
 
         resultElement.textContent = `${resultText} 최종 애미: ${Math.floor(finalAmount)} 애미`;
+
+        // 서버에 게임 결과 저장
+        const username = 'currentUsername'; // 실제로는 로그인한 사용자 정보를 사용
+        await fetch('/game-result', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, ammiChange: Math.floor(finalAmount) - betAmount })
+        });
     });
 
-    // 랭킹 불러오기
+    document.getElementById('signup-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const username = document.getElementById('signup-username').value;
+        const password = document.getElementById('signup-password').value;
+
+        const response = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+        document.getElementById('signup-result').textContent = result.message;
+    });
+
+    document.getElementById('login-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            document.getElementById('login-result').textContent = '로그인 성공!';
+            // 로그인 후 사용자 이름 저장 (예: sessionStorage 또는 localStorage 사용)
+            // localStorage.setItem('username', username);
+            // 또는 클라이언트 측에서 세션 관리
+        } else {
+            document.getElementById('login-result').textContent = result.message;
+        }
+    });
+
     async function loadRanking() {
         const response = await fetch('/ranking');
-        const rankingData = await response.json();
-
+        const ranking = await response.json();
         const rankingList = document.getElementById('ranking-list');
-        rankingList.innerHTML = ''; // 기존 항목 삭제
-
-        rankingData.forEach((player, index) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${index + 1}. ${player.username}: ${player.totalAmmi} 애미`;
-            rankingList.appendChild(listItem);
-        });
+        rankingList.innerHTML = ranking.map(user => `<li>${user.username}: ${user.totalAmmi} 애미</li>`).join('');
     }
 
-    // 페이지 로드 시 총 애미와 랭킹 표시
-    updateTotalAmmiDisplay();
     loadRanking();
 });
