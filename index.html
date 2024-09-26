@@ -1,56 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>애미 게임</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가위 가위 가위 놀이</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>애미 게임 사이트</h1>
-
-    <!-- 회원가입 폼 -->
-    <div id="signup-form">
-      <h2>회원가입</h2>
-      <form id="registerForm">
-        <input type="text" id="username" placeholder="사용자명" required><br>
-        <input type="email" id="email" placeholder="이메일" required><br>
-        <button type="submit">회원가입</button>
-      </form>
+    <div class="game-container">
+        <h1>가위 가위 가위 놀이</h1>
+        <div class="scissors-container">
+            <div class="scissors left-scissors">✌</div>
+            <div class="scissors right-scissors">✌</div>
+        </div>
+        <button id="play-button">가위 비비기</button>
     </div>
-
-    <!-- 로그인 폼 -->
-    <div id="login-form" style="display:none;">
-      <h2>로그인</h2>
-      <form id="loginForm">
-        <input type="text" id="login-username" placeholder="사용자명" required><br>
-        <button type="submit">로그인</button>
-      </form>
-    </div>
-
-    <!-- 게임 섹션 -->
-    <div id="game-section" style="display:none;">
-      <h2>애미 잔액: <span id="balance">0</span></h2>
-
-      <!-- 룰렛 게임 -->
-      <div id="roulette-game">
-        <h3>룰렛 게임</h3>
-        <input type="number" id="bet-amount" placeholder="배팅할 애미 수"><br>
-        <button id="play-roulette">룰렛 돌리기</button>
-      </div>
-
-      <!-- 주사위 게임 -->
-      <div id="dice-game">
-        <h3>주사위 게임</h3>
-        <input type="number" id="dice-bet" placeholder="배팅할 애미 수"><br>
-        <input type="number" id="chosen-number1" placeholder="선택할 숫자 1"><br>
-        <input type="number" id="chosen-number2" placeholder="선택할 숫자 2"><br>
-        <button id="play-dice">주사위 돌리기</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
