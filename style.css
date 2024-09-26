@@ -18,13 +18,15 @@ body {
 
 .scissors-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center; /* 세로축 중앙 정렬 */
     margin: 20px 0;
 }
 
 .scissors {
     font-size: 50px;
-    transition: transform 0.3s;
+    transition: transform 0.2s;
+    transform-origin: center center; /* 회전 중심을 가위의 중앙으로 설정 */
 }
 
 button {
