@@ -14,38 +14,37 @@ function updateUI() {
     document.getElementById('mom').textContent = `Mom's Support: ${momSupport}`; // 엄마 자원 (항상 0으로 유지)
 }
 
-// 음식을 찾는 함수
 function searchForFood() {
     let foodFound = Math.floor(Math.random() * 20) + 1;
     food += foodFound;
-    health -= 5;
+    money -= 30; // 돈을 더 많이 줄임
+    health -= 10; // 건강을 더 많이 줄임
     day++;
     checkGameOver();
     updateUI();
-    alert(`You found ${foodFound} units of food!`);
+    alert(`당신은 ${foodFound} 단위의 음식을 찾았습니다!`);
 }
 
-// 일을 찾는 함수
 function findJob() {
     let moneyEarned = Math.floor(Math.random() * 30) + 5;
     money += moneyEarned;
-    food -= 10;
-    health -= 10;
+    food -= 20; // 음식 소모량 증가
+    health -= 10; // 건강 소모량 유지 또는 증가
     day++;
     checkGameOver();
     updateUI();
-    alert(`You earned ${moneyEarned} money!`);
+    alert(`당신은 ${moneyEarned} 돈을 벌었습니다!`);
 }
 
-// 휴식을 취하는 함수
 function rest() {
-    health += 20;
-    food -= 5;
+    health += 10; // 휴식 시 회복량 줄임
+    food -= 10; // 음식 소모량 증가
     day++;
     checkGameOver();
     updateUI();
-    alert("You rested and regained health.");
+    alert("당신은 휴식을 취하여 건강을 회복했습니다.");
 }
+
 
 // 엄마에게 도움 요청하는 함수 (지원 불가)
 function askMomForHelp() {
