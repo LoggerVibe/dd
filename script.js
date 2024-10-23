@@ -17,7 +17,7 @@ function updateUI() {
 function searchForFood() {
     let foodFound = Math.floor(Math.random() * 20) + 1;
     food += foodFound;
-    money -= 15; // 돈을 더 많이 줄임
+    money -= 5; // 돈을 더 많이 줄임
     health -= 10; // 건강을 더 많이 줄임
     day++;
     checkGameOver();
