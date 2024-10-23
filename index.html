@@ -37,7 +37,7 @@
         function searchForFood() {
             let foodFound = Math.floor(Math.random() * 20) + 1;
             food += foodFound;
-            money -= 10; // 음식 찾기로 인해 10원 줄어듦
+            money -= 1; // 음식 찾기로 인해 10원 줄어듦
             health -= 10; // 건강이 10 줄어듦
             day++;
             checkGameOver();
@@ -64,8 +64,6 @@
             // 돈이 가장 높은 경우
             if (money >= food && money >= health) {
                 memoryText.textContent = "(엄마의 리버스 지원)";
-                momSupport -= 10; // 엄마의 지원 -10
-                money -= 30; // 돈 -30
             } 
             // 건강이 가장 높은 경우
             else if (health >= food && health >= money) {
@@ -74,7 +72,6 @@
             // 음식이 가장 높은 경우
             else if (food >= health && food >= money) {
                 memoryText.textContent = "애미!!?!?!?! 왜 밥 잘먹고 다니노?1?!!!!!!(엄마가 호통친다)";
-                money -= 20; // 음식이 가장 높은 경우 돈 -20
             }
 
             setTimeout(() => {
@@ -85,7 +82,7 @@
         // 게임 오버 확인 함수
         function checkGameOver() {
             if (health <= 0) {
-                alert("건강하게 운지. 게임 오버!");
+                alert("고환암에 걸리고 말앗다..!");
                 resetGame();
             } else if (food <= 0) {
                 alert("굶어뒤짐.. 게임 오버!");
