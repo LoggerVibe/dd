@@ -166,14 +166,21 @@
         }
 
         function checkGameOver() {
-            if (health <= 0 || food <= 0 || money <= -100) {
+            if (health <= 0) {
+                alert("고환암에 걸리고야 말앗습니다..");
+                resetGame();
+            } else if (food <= 0) {
+                alert("배고프다고 ㅅㅂ");
+                resetGame();
+            } else if (money <= -100) {
                 alert("엄마 따라갔노 ㅋㅋ");
                 resetGame();
-            } else if (day >= 10) {
-                alert("게임 오버. 10일이 지나갔습니다.");
+            } else if (day >= 30) {
+                alert("엄마가 돌아왔습니다. 고아탈출을 축하합니다.");
                 resetGame();
             }
         }
+
 
         function resetGame() {
             day = 1;
