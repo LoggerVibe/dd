@@ -1,48 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>고아게임</title>
+    <title>고아 게임</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
             background-color: #f4f4f9;
         }
-        .status {
+
+        /* 기본 스타일 */
+        .status, .buttons {
             font-size: 18px;
             margin-bottom: 20px;
         }
-        .buttons {
-            display: flex;
-            flex-direction: column;
-        }
-        button {
+
+        .buttons button {
             margin-bottom: 10px;
             padding: 10px;
             font-size: 16px;
             cursor: pointer;
         }
+
+        /* 이미지와 텍스트가 페이드인되는 스타일 */
+        .fade-in {
+            opacity: 0;
+            transition: opacity 2s ease-in;
+        }
+
+        .visible {
+            opacity: 1;
+        }
+
+        /* 회상 이미지 스타일 */
+        .memory {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 200px;
+            background-size: cover;
+            display: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .memory p {
+            color: white;
+            text-align: center;
+            font-size: 18px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Orphan Survival Game</h1>
+
+    <h1>고아 게임</h1>
     <div class="status">
-        <p id="day">Day: 1</p>
-        <p id="health">Health: 100</p>
-        <p id="food">Food: 50</p>
-        <p id="money">Money: 0</p>
-        <p id="mom">Mom's Support: 0</p> <!-- 엄마 자원 추가 -->
+        <p id="day">날짜: 1</p>
+        <p id="health">건강: 100</p>
+        <p id="food">음식: 50</p>
+        <p id="money">돈: 0</p>
+        <p id="mom">엄마의 지원: 0</p>
     </div>
 
     <div class="buttons">
-        <button onclick="searchForFood()">Search for Food</button>
-        <button onclick="findJob()">Find a Job</button>
-        <button onclick="rest()">Rest</button>
-        <button onclick="askMomForHelp()">Ask Mom for Help</button> <!-- 엄마에게 도움 요청 버튼 추가 -->
+        <button onclick="searchForFood()">음식 찾기</button>
+        <button onclick="findJob()">일자리 찾기</button>
+        <button onclick="rest()">휴식</button>
+        <button onclick="triggerMemory()">회상하기</button> <!-- 회상 이벤트 버튼 -->
     </div>
 
-    <script src="game.js"></script>
+    <!-- 회상 이미지를 위한 요소 -->
+    <div id="memory" class="memory">
+        <img src="mom_memory.jpg" alt="엄마와의 기억" style="width: 100%; height: 100%;"> <!-- 엄마와의 추억 이미지 -->
+        <p>엄마와 함께한 마지막 기억이 떠올랐다...</p>
+    </div>
+
+    <script>
+        // 상태 변수 설정
+        let day = 1;
+        let health = 100;
+        let food = 50;
+        let money = 0;
+        let momSupport = 0;
+
+        // UI 업데이트 함수
+        function updateUI() {
+            document.getElementById('day').textContent = `날짜: ${day}`;
+            document.getElementById('health').textContent = `건강: ${health}`;
+            document.getElementById('food').textContent = `음식: ${food}`;
+            document.getElementById('money').textContent = `돈: ${money}`;
+            document.getElementById('mom').textContent = `엄마의 지원: ${momSupport}`;
+        }
+
+        // 음식을 찾는 함수
+        function searchForFood() {
+            let foodFound = Math.floor(Math.random() * 20) + 1;
+            food += foodFound;
+            health -= 5;
+            day++;
+            checkGameOver();
+            updateUI();
+            alert(`당신은 ${foodFound} 단위의 음식을 찾았습니다!`);
+        }
+
+        // 일을 찾는 함수
+        function findJob() {
+            let moneyEarned = Math.floor(Math.random() * 30) + 5;
+            money += moneyEarned;
+            food -= 10;
+            health -= 10;
+            day++;
+            checkGameOver();
+            updateUI();
+            alert(`당신은 ${moneyEarned} 돈을 벌었습니다!`);
+        }
+
+        // 휴식을 취하는 함수
+        function rest() {
+            health += 20;
+            food -= 5;
+            day++;
+            checkGameOver();
+            updateUI();
+            alert("당신은 휴식을 취하여 건강을 회복했습니다.");
+        }
+
+        // 회상 이벤트를 트리거하는 함수
+        function triggerMemory() {
+            const memory = document.getElementById('memory');
+            memory.style.display = 'block';
+            setTimeout(() => {
+                memory.classList.add('visible');
+            }, 100); // 약간의 딜레이 후에 페이드 인 효과를 적용
+
+            // 일정 시간이 지난 후 회상 이미지 사라짐
+            setTimeout(() => {
+                memory.classList.remove('visible');
+                memory.style.display = 'none';
+            }, 5000); // 5초 후에 이미지 사라짐
+        }
+
+        // 게임 종료 체크 함수
+        function checkGameOver() {
+            if (health <= 0 || food <= 0) {
+                alert("게임 오버. 당신은 생존하지 못했습니다.");
+                resetGame();
+            }
+        }
+
+        // 게임 리셋 함수
+        function resetGame() {
+            day = 1;
+            health = 100;
+            food = 50;
+            money = 0;
+            momSupport = 0;
+            updateUI();
+        }
+
+        // 초기 상태 업데이트
+        updateUI();
+    </script>
+
 </body>
 </html>
