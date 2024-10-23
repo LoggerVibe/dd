@@ -17,7 +17,7 @@ function updateUI() {
 function searchForFood() {
     let foodFound = Math.floor(Math.random() * 20) + 1;
     food += foodFound;
-    money -= 30; // 돈을 더 많이 줄임
+    money -= 15; // 돈을 더 많이 줄임
     health -= 10; // 건강을 더 많이 줄임
     day++;
     checkGameOver();
@@ -37,12 +37,14 @@ function findJob() {
 }
 
 function rest() {
-    health += 10; // 휴식 시 회복량 줄임
-    food -= 10; // 음식 소모량 증가
+    health += 10; // 휴식 시 회복량 유지
+    food -= 10; // 음식 소모량을 10으로 설정
     day++;
     checkGameOver();
     updateUI();
     alert("당신은 휴식을 취하여 건강을 회복했습니다.");
+}
+
 }
 
 
