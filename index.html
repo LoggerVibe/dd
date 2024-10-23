@@ -37,7 +37,7 @@
         function searchForFood() {
             let foodFound = Math.floor(Math.random() * 20) + 1;
             food += foodFound;
-            money -= 1; // 음식 찾기로 인해 10원 줄어듦
+            money -= 5; // 음식 찾기로 인해 10원 줄어듦
             health -= 10; // 건강이 10 줄어듦
             day++;
             checkGameOver();
