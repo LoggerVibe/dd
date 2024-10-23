@@ -3,200 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>고아게임</title>
+    <title>고아 게임</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f9;
-        }
-
-        .status, .buttons {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .buttons button {
-            margin-bottom: 10px;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .fade-in {
-            opacity: 0;
-            transition: opacity 2s ease-in;
-        }
-
-        .visible {
-            opacity: 1;
-        }
-
-        .memory {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 200px;
-            background-size: cover;
-            display: none;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .memory p {
-            color: white;
-            text-align: center;
-            font-size: 18px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-        }
-
-        .restart-button {
-            display: none; /* 초기에는 숨김 */
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+        body { font-family: Arial, sans-serif; }
+        #game-ui { margin: 20px; }
+        .hidden { display: none; }
+        #memory { position: absolute; background: rgba(255, 255, 255, 0.9); border: 1px solid black; padding: 10px; }
     </style>
 </head>
 <body>
-
-    <h1>고아게임</h1>
-    <div class="status">
-        <p id="day">날짜: 1</p>
-        <p id="health">건강: 100</p>
-        <p id="food">음식: 50</p>
-        <p id="money">돈: 0</p>
-        <p id="mom">엄마의 지원: 0</p>
-    </div>
-
-    <div class="buttons">
+    <div id="game-ui">
+        <h1>고아 게임</h1>
+        <p>건강: <span id="health">100</span></p>
+        <p>음식: <span id="food">50</span></p>
+        <p>돈: <span id="money">100</span></p>
+        <p>날: <span id="day">1</span></p>
         <button onclick="searchForFood()">음식 찾기</button>
-        <button onclick="findJob()">일자리 찾기</button>
         <button onclick="rest()">휴식</button>
         <button onclick="triggerMemory()">회상하기</button>
+        <div id="memory" class="hidden">
+            <p id="memory-text"></p>
+        </div>
     </div>
-
-    <div id="memory" class="memory">
-        <img src="mom_memory.jpg" alt="엄마와의 기억" style="width: 100%; height: 100%;">
-        <p id="memory-text">기억이 떠오르는 중...</p>
-    </div>
-
-    <button id="restart-button" class="restart-button" onclick="resetGame()">다시 시작하기</button>
 
     <script>
-        let day = 1;
         let health = 100;
         let food = 50;
-        let money = 0;
-        let momSupport = 0;
+        let money = 100;
+        let momSupport = 50; // 엄마의 지원 초기값
+        let day = 1;
 
-        function updateUI() {
-            document.getElementById('day').textContent = `날짜: ${day}`;
-            document.getElementById('health').textContent = `건강: ${health}`;
-            document.getElementById('food').textContent = `음식: ${food}`;
-            document.getElementById('money').textContent = `돈: ${money}`;
-            document.getElementById('mom').textContent = `엄마의 지원: ${momSupport}`;
-        }
-
+        // 음식 찾기 함수
         function searchForFood() {
             let foodFound = Math.floor(Math.random() * 20) + 1;
             food += foodFound;
-            money -= 30; // 돈을 더 많이 줄임
-            health -= 10; // 건강을 더 많이 줄임
+            money -= 10; // 음식 찾기로 인해 10원 줄어듦
+            health -= 10; // 건강이 10 줄어듦
             day++;
             checkGameOver();
             updateUI();
             alert(`당신은 ${foodFound} 단위의 음식을 찾았습니다!`);
         }
 
-        function findJob() {
-            let moneyEarned = Math.floor(Math.random() * 30) + 5;
-            money += moneyEarned;
-            food -= 20; // 음식 소모량 증가
-            health -= 10; // 건강 소모량 유지 또는 증가
-            day++;
-            checkGameOver();
-            updateUI();
-            alert(`당신은 ${moneyEarned} 돈을 벌었습니다!`);
-        }
-
+        // 휴식 함수
         function rest() {
-            health += 10; // 휴식 시 회복량 줄임
-            food -= 10; // 음식 소모량 증가
+            health += 10; // 휴식 시 회복량 유지
+            food -= 10; // 음식 소모량을 10으로 설정
             day++;
             checkGameOver();
             updateUI();
             alert("당신은 휴식을 취하여 건강을 회복했습니다.");
         }
 
+        // 회상 이벤트를 트리거하는 함수
         function triggerMemory() {
             const memory = document.getElementById('memory');
             const memoryText = document.getElementById('memory-text');
+            memory.classList.remove('hidden');
 
-            console.log(`돈: ${money}, 음식: ${food}, 건강: ${health}`); // 상태 값 확인
-
+            // 돈이 가장 높은 경우
             if (money >= food && money >= health) {
                 memoryText.textContent = "(엄마의 리버스 지원)";
-                momSupport -= 10;
-                money -= 30;
-            } else if (health >= food && health >= money) {
+                momSupport -= 10; // 엄마의 지원 -10
+                money -= 30; // 돈 -30
+            } 
+            // 건강이 가장 높은 경우
+            else if (health >= food && health >= money) {
                 memoryText.textContent = "애미가 날 버리던 모습이 떠올랐노..ㅠㅠ";
-            } else if (food >= health && food >= money) {
+            } 
+            // 음식이 가장 높은 경우
+            else if (food >= health && food >= money) {
                 memoryText.textContent = "애미!!?!?!?! 왜 밥 잘먹고 다니노?1?!!!!!!(엄마가 호통친다)";
-                money -= 20;
-            } else {
-                memoryText.textContent = "기억이 떠오르지 않는다.";
+                money -= 20; // 음식이 가장 높은 경우 돈 -20
             }
 
-            updateUI();
-
-            memory.style.display = 'block';
             setTimeout(() => {
-                memory.classList.add('visible');
-            }, 100);
-
-            setTimeout(() => {
-                memory.classList.remove('visible');
-                setTimeout(() => {
-                    memory.style.display = 'none';
-                }, 2000);
-            }, 3000);
+                memory.classList.add('hidden');
+            }, 3000); // 3초 후에 사라짐
         }
 
+        // 게임 오버 확인 함수
         function checkGameOver() {
             if (health <= 0) {
-                alert("고환암에 걸리고야 말앗습니다..");
+                alert("건강하게 운지. 게임 오버!");
                 resetGame();
             } else if (food <= 0) {
-                alert("배고프다고 ㅅㅂ");
+                alert("굶어뒤짐.. 게임 오버!");
                 resetGame();
             } else if (money <= -100) {
                 alert("엄마 따라갔노 ㅋㅋ");
                 resetGame();
-            } else if (day >= 30) {
-                alert("엄마가 돌아왔습니다. 고아탈출을 축하합니다.");
+            } else if (day >= 15) {
+                alert("엄마가 찾아왔다..!!");
                 resetGame();
             }
         }
 
-
+        // 게임 상태 초기화 함수
         function resetGame() {
-            day = 1;
             health = 100;
             food = 50;
-            money = 0;
-            momSupport = 0;
+            money = 100;
+            momSupport = 50;
+            day = 1;
             updateUI();
-            document.getElementById('restart-button').style.display = 'none'; // 숨김
-
-            // 다시 시작하기 버튼 보이기
-            document.getElementById('restart-button').style.display = 'block';
         }
 
-        updateUI();
+        // UI 업데이트 함수
+        function updateUI() {
+            document.getElementById('health').textContent = health;
+            document.getElementById('food').textContent = food;
+            document.getElementById('money').textContent = money;
+            document.getElementById('day').textContent = day;
+        }
     </script>
-
 </body>
 </html>
