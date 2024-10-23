@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>고아 게임</title>
+    <title>고아게임</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,7 +58,7 @@
 </head>
 <body>
 
-    <h1>고아 게임</h1>
+    <h1>고아게임</h1>
     <div class="status">
         <p id="day">날짜: 1</p>
         <p id="health">건강: 100</p>
@@ -77,7 +77,7 @@
     <!-- 회상 이미지를 위한 요소 -->
     <div id="memory" class="memory">
         <img src="mom_memory.jpg" alt="엄마와의 기억" style="width: 100%; height: 100%;"> <!-- 엄마와의 추억 이미지 -->
-        <p>엄마와 함께한 마지막 기억이 떠올랐다...</p>
+        <p id="memory-text">기억이 떠오르는 중...</p>
     </div>
 
     <script>
@@ -101,6 +101,7 @@
         function searchForFood() {
             let foodFound = Math.floor(Math.random() * 20) + 1;
             food += foodFound;
+            money -= 20; // 음식 찾기 시 돈 -20
             health -= 5;
             day++;
             checkGameOver();
@@ -133,16 +134,40 @@
         // 회상 이벤트를 트리거하는 함수
         function triggerMemory() {
             const memory = document.getElementById('memory');
+            const memoryText = document.getElementById('memory-text');
+
+            // 돈이 가장 높은 경우
+            if (money >= food && money >= health) {
+                memoryText.textContent = "(엄마의 리버스 지원)";
+                momSupport -= 10; // 엄마의 지원 -10
+                money -= 30; // 돈 -30
+            } 
+            // 건강이 가장 높은 경우
+            else if (health >= food && health >= money) {
+                memoryText.textContent = "애미가 날 버리던 모습이 떠올랐노..ㅠㅠ";
+            } 
+            // 음식이 가장 높은 경우
+            else if (food >= health && food >= money) {
+                memoryText.textContent = "애미!!?!?!?! 왜 밥 잘먹고 다니노?1?!!!!!!(엄마가 호통친다)";
+                money -= 20; // 음식이 가장 높은 경우 돈 -20
+            }
+
+            // UI 업데이트
+            updateUI();
+
+            // 회상 이미지를 표시하고 페이드인 효과 적용
             memory.style.display = 'block';
             setTimeout(() => {
                 memory.classList.add('visible');
-            }, 100); // 약간의 딜레이 후에 페이드 인 효과를 적용
+            }, 100);
 
-            // 일정 시간이 지난 후 회상 이미지 사라짐
+            // 3초 후에 회상 이미지 사라짐
             setTimeout(() => {
                 memory.classList.remove('visible');
-                memory.style.display = 'none';
-            }, 5000); // 5초 후에 이미지 사라짐
+                setTimeout(() => {
+                    memory.style.display = 'none';
+                }, 2000); // 페이드 아웃 시간 고려
+            }, 3000); // 3초 후에 이미지가 사라지기 시작
         }
 
         // 게임 종료 체크 함수
