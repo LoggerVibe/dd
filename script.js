@@ -28,7 +28,7 @@ function searchForFood() {
 function findJob() {
     let moneyEarned = Math.floor(Math.random() * 30) + 5;
     money += moneyEarned;
-    food -= 20; // 음식 소모량 증가
+    food -= 15; // 음식 소모량 증가
     health -= 10; // 건강 소모량 유지 또는 증가
     day++;
     checkGameOver();
