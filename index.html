@@ -1,20 +1,48 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>가위 가위 가위 놀이</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Orphan Survival Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        .status {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+        }
+        button {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div class="game-container">
-        <h1>가위 가위 가위 놀이</h1>
-        <div class="scissors-container">
-            <div class="scissors left-scissors">✌</div>
-            <div class="scissors right-scissors">✌</div>
-        </div>
-        <button id="play-button">가위 비비기</button>
+    <h1>Orphan Survival Game</h1>
+    <div class="status">
+        <p id="day">Day: 1</p>
+        <p id="health">Health: 100</p>
+        <p id="food">Food: 50</p>
+        <p id="money">Money: 0</p>
+        <p id="mom">Mom's Support: 0</p> <!-- 엄마 자원 추가 -->
     </div>
-    <script src="script.js"></script>
+
+    <div class="buttons">
+        <button onclick="searchForFood()">Search for Food</button>
+        <button onclick="findJob()">Find a Job</button>
+        <button onclick="rest()">Rest</button>
+        <button onclick="askMomForHelp()">Ask Mom for Help</button> <!-- 엄마에게 도움 요청 버튼 추가 -->
+    </div>
+
+    <script src="game.js"></script>
 </body>
 </html>
