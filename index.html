@@ -131,12 +131,13 @@
             alert("당신은 휴식을 취하여 건강을 회복했습니다.");
         }
 
-       // 회상 이벤트를 트리거하는 함수
+// 회상 이벤트를 트리거하는 함수
 function triggerMemory() {
     const memory = document.getElementById('memory');
     const memoryText = document.getElementById('memory-text');
 
-    console.log(`돈: ${money}, 음식: ${food}, 건강: ${health}`); // 상태 값 확인
+    // 돈, 음식, 건강 값 출력 (디버깅용)
+    console.log(`돈: ${money}, 음식: ${food}, 건강: ${health}`);
 
     // 돈이 가장 높은 경우
     if (money >= food && money >= health) {
@@ -153,7 +154,7 @@ function triggerMemory() {
         memoryText.textContent = "애미!!?!?!?! 왜 밥 잘먹고 다니노?1?!!!!!!(엄마가 호통친다)";
         money -= 20; // 음식이 가장 높은 경우 돈 -20
     } else {
-        memoryText.textContent = "기억이 떠오르지 않는다.";
+        memoryText.textContent = "기억이 떠오르지 않는다."; // 조건이 모두 맞지 않는 경우
     }
 
     // UI 업데이트
@@ -161,9 +162,7 @@ function triggerMemory() {
 
     // 회상 이미지를 표시하고 페이드인 효과 적용
     memory.style.display = 'block';
-    setTimeout(() => {
-        memory.classList.add('visible');
-    }, 100);
+    memory.classList.add('visible');
 
     // 3초 후에 회상 이미지 사라짐
     setTimeout(() => {
@@ -173,6 +172,7 @@ function triggerMemory() {
         }, 2000); // 페이드 아웃 시간 고려
     }, 3000); // 3초 후에 이미지가 사라지기 시작
 }
+
 
 
         // 게임 종료 체크 함수
